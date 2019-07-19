@@ -1,12 +1,38 @@
 {
   "apps": [{
-    "serverURL": "http://localhost:1338/parse",
-    "appId": "hello",
-    "masterKey": "world",
-    "appName": "",
+    "serverURL": "https://techie-backbone.herokuapp.com/parse",
+    "appId": "techie-backbone",
+    "masterKey": "test@123",
+    "appName": "Techie Backbone",
     "iconName": "",
-    "primaryBackgroundColor": "",
-    "secondaryBackgroundColor": ""
-  }],
+    "primaryBackgroundColor": "#AC193D",
+    "secondaryBackgroundColor": "#800926",
+    "production": "true"
+  },{
+    "serverURL": "https://techie-cloud.herokuapp.com/api",
+    "appId": "techie-cloud",
+    "masterKey": "717301ea-504e-11e9-8647-d663bd873d93",
+    "appName": "Techie Cloud Heroku",
+    "iconName": "",
+    "primaryBackgroundColor": "#AC193D",
+    "secondaryBackgroundColor": "#800926",
+    "production": "true"
+  },{
+    "serverURL": "https://cloud.codeaffinity.net/api",
+    "appId": "techie-cloud",
+    "masterKey": "717301ea-504e-11e9-8647-d663bd873d93",
+    "appName": "Techie Cloud",
+    "iconName": "",
+    "primaryBackgroundColor": "#AC193D",
+    "secondaryBackgroundColor": "#800926",
+    "production": "true"
+  }
+],
+  "users": [
+   {
+    "user":"truekasun",
+    "pass":"kasun@1991"
+   }
+  ],
   "iconsFolder": "icons"
 }
