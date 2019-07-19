@@ -34,5 +34,6 @@
     "pass":"kasun@1991"
    }
   ],
-  "iconsFolder": "icons"
+  "iconsFolder": "icons",
+  "allowInsecureHTTP": true
 }
