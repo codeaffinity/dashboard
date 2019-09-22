@@ -12,6 +12,7 @@ import Editor                 from 'dashboard/Data/Browser/Editor.react';
 import EmptyState             from 'components/EmptyState/EmptyState.react';
 import Icon                   from 'components/Icon/Icon.react';
 import Parse                  from 'parse';
+import encode                 from 'parse/lib/browser/encode';
 import React                  from 'react';
 import styles                 from 'dashboard/Data/Browser/Browser.scss';
 import Button                 from 'components/Button/Button.react';
@@ -135,7 +136,8 @@ export default class BrowserTable extends React.Component {
               selectRow={this.props.selectRow}
               setCurrent={this.props.setCurrent}
               setEditing={this.props.setEditing}
-              setRelation={this.props.setRelation} />
+              setRelation={this.props.setRelation}
+              setCopyableValue={this.props.setCopyableValue} />
           </div>
         );
       }
@@ -167,7 +169,8 @@ export default class BrowserTable extends React.Component {
           selectRow={this.props.selectRow}
           setCurrent={this.props.setCurrent}
           setEditing={this.props.setEditing}
-          setRelation={this.props.setRelation} />
+          setRelation={this.props.setRelation}
+          setCopyableValue={this.props.setCopyableValue} />
       }
 
       if (this.props.editing) {
@@ -196,7 +199,7 @@ export default class BrowserTable extends React.Component {
               // "Parse._encoding" is responsible to convert Parse data into raw data.
               // Since array and object are generic types, we want to edit them the way
               // they were stored in the database.
-              value = Parse._encode(obj.get(name));
+              value = encode(obj.get(name), undefined, true);
             } else {
               value = obj.get(name);
             }

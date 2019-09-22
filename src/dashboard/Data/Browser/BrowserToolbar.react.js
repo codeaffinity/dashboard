@@ -20,7 +20,7 @@ import Toolbar        from 'components/Toolbar/Toolbar.react';
 
 let BrowserToolbar = ({
   className,
-  classNameForPermissionsEditor,
+  classNameForEditors,
   count,
   perms,
   schema,
@@ -145,14 +145,14 @@ let BrowserToolbar = ({
 
   const userPointers = [];
   const schemaSimplifiedData = {};
-  const classSchema = schema.data.get('classes').get(className);
+  const classSchema = schema.data.get('classes').get(classNameForEditors);
   if (classSchema) {
     classSchema.forEach(({ type, targetClass }, col) => {
-      if (name === 'objectId' || isUnique && name !== uniqueField) {
+      if (col === 'objectId' || isUnique && col !== uniqueField) {
         return;
       }
       if (targetClass === '_User') {
-        userPointers.push(name);
+        userPointers.push(col);
       }
       schemaSimplifiedData[col] = {
         type,
@@ -189,13 +189,13 @@ let BrowserToolbar = ({
         schema={schemaSimplifiedData}
         filters={filters}
         onChange={onFilterChange}
-        className={className} />
+        className={classNameForEditors} />
       <div className={styles.toolbarSeparator} />
       {enableSecurityDialog ? <SecurityDialog
         setCurrent={setCurrent}
         disabled={!!relation || !!isUnique}
         perms={perms}
-        className={classNameForPermissionsEditor}
+        className={classNameForEditors}
         onChangeCLP={onChangeCLP}
         userPointers={userPointers} /> : <noscript />}
       {enableSecurityDialog ? <div className={styles.toolbarSeparator} /> : <noscript/>}

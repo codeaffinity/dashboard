@@ -1,9 +1,22 @@
 ## Parse Dashboard Changelog
 
 ### master
-[Full Changelog](https://github.com/parse-community/parse-dashboard/compare/2.0.1...master)
+[Full Changelog](https://github.com/parse-community/parse-dashboard/compare/2.0.3...master)
 
 * _Contributing to this repo? Add info about your change here to be included in next release_
+
+### 2.0.3
+[Full Changelog](https://github.com/parse-community/parse-dashboard/compare/2.0.2...2.0.3)
+* Fix: Feature "masterkey parameters" requires Parse Server >= 3.9.0 ([#1281](https://github.com/parse-community/parse-dashboard/pull/1281)), thanks to [Manuel Trezza](https://github.com/mtrezza)
+* Fix: CLP dialog for pointer fields ([#1283](https://github.com/parse-community/parse-dashboard/pull/1283)), thanks to [Antonio Davi Macedo Coelho de Castro](https://github.com/davimacedo)
+* Fix: Force pointer array items to always be pointers ([#1291](https://github.com/parse-community/parse-dashboard/pull/1291)), thanks to [Antonio Davi Macedo Coelho de Castro](https://github.com/davimacedo)
+
+### 2.0.2
+[Full Changelog](https://github.com/parse-community/parse-dashboard/compare/2.0.1...2.0.2)
+* Fix: filter tab not working for _User, and ohter classes starting with _ ([#1275](https://github.com/parse-community/parse-dashboard/pull/1275)), thanks to [Antonio Davi Macedo Coelho de Castro](https://github.com/davimacedo)
+* Fix: Data Browser is not updating accordingly ([#1276](https://github.com/parse-community/parse-dashboard/pull/1276)), thanks to [Antonio Davi Macedo Coelho de Castro](https://github.com/davimacedo)
+* NEW: Copy cell value using CTRL+C ([#1272](https://github.com/parse-community/parse-dashboard/pull/1272)), thanks to [Douglas Muaroka](https://github.com/douglasmuraoka)
+* Docs: Update NodeJS required version in README ([#1265](https://github.com/parse-community/parse-dashboard/pull/1265)), thanks to [Jerome](https://github.com/JeromeDeLeon)
 
 ### 2.0.1
 [Full Changelog](https://github.com/parse-community/parse-dashboard/compare/2.0.0...2.0.1)

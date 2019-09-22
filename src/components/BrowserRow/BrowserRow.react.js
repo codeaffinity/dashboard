@@ -1,4 +1,5 @@
 import Parse from 'parse';
+import encode from 'parse/lib/browser/encode';
 import React, { Component } from 'react';
 
 import BrowserCell from 'components/BrowserCell/BrowserCell.react';
@@ -18,7 +19,7 @@ export default class BrowserRow extends Component {
   }
 
   render() {
-    const { className, columns, currentCol, isUnique, obj, onPointerClick, order, readOnlyFields, row, rowWidth, selection, selectRow, setCurrent, setEditing, setRelation } = this.props;
+    const { className, columns, currentCol, isUnique, obj, onPointerClick, order, readOnlyFields, row, rowWidth, selection, selectRow, setCopyableValue, setCurrent, setEditing, setRelation } = this.props;
     let attributes = obj.attributes;
     return (
       <div className={styles.tableRow} style={{ minWidth: rowWidth }}>
@@ -46,7 +47,7 @@ export default class BrowserRow extends Component {
               // "Parse._encoding" is responsible to convert Parse data into raw data.
               // Since array and object are generic types, we want to render them the way
               // they were stored in the database.
-              attr = Parse._encode(obj.get(name));
+              attr = encode(obj.get(name), undefined, true);
             }
           }
           let hidden = false;
@@ -71,7 +72,8 @@ export default class BrowserRow extends Component {
               onPointerClick={onPointerClick}
               setRelation={setRelation}
               value={attr}
-              hidden={hidden} />
+              hidden={hidden}
+              setCopyableValue={setCopyableValue} />
           );
         })}
       </div>
