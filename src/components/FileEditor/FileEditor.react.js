@@ -20,7 +20,6 @@ export default class FileEditor extends React.Component {
 
     this.checkExternalClick = this.checkExternalClick.bind(this);
     this.handleKey = this.handleKey.bind(this);
-    this.removeFile = this.removeFile.bind(this);
   }
 
   componentDidMount() {
@@ -34,31 +33,24 @@ export default class FileEditor extends React.Component {
   }
 
   checkExternalClick(e) {
-    const { onCancel } = this.props;
-    if (!hasAncestor(e.target, this.refs.input) && onCancel) {
-      onCancel();
+    if (!hasAncestor(e.target, this.refs.input)) {
+      this.props.onCommit(this.state.value);
     }
   }
 
   handleKey(e) {
-    const { onCancel } = this.props;
-    if (e.keyCode === 13 && onCancel) {
-      onCancel();
+    if (e.keyCode === 13) {
+      this.props.onCommit(this.state.value);
     }
   }
 
-  getBase64(file) {
+  getBase64(file){
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
       reader.onerror = error => reject(error);
     });
-  }
-
-  removeFile() {
-    this.refs.fileInput.value = '';
-    this.props.onCommit(undefined);
   }
 
   async handleChange(e) {
@@ -75,10 +67,10 @@ export default class FileEditor extends React.Component {
       <div ref='input' style={{ minWidth: this.props.width }} className={styles.editor}>
         {file && file.url() ? <a href={file.url()} target='_blank' role='button' className={styles.download}>Download</a> : null}
         <a className={styles.upload}>
-          <input ref='fileInput' type='file' onChange={this.handleChange.bind(this)} />
+          <input type='file' onChange={this.handleChange.bind(this)} />
           <span>{file ? 'Replace file' : 'Upload file'}</span>
         </a>
-        {file ? <a href='javascript:;' role='button' className={styles.delete} onClick={this.removeFile}>Delete</a> : null}
+        {file ? <a href='javascript:;' role='button' className={styles.delete} onClick={() => this.props.onCommit(undefined)}>Delete</a> : null}
       </div>
     );
   }

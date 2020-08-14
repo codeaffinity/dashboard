@@ -9,32 +9,16 @@ import Icon      from 'components/Icon/Icon.react';
 import React     from 'react';
 import styles    from 'components/MultiSelect/MultiSelect.scss';
 
-let MultiSelectOption = ({ checked, children, dense, disabled, ...other }) => {
-  
-  const classes = [styles.option,
-  disabled? styles.disabled: undefined
-  ];
-  
-  const icon = checked ? (
-    <div className={styles.checked}>
-      <Icon
-        width={dense ? 15 : 20}
-        height={dense ? 15 : 20}
-        name="check"
-        fill="#ffffff"
-      />
-    </div>
-  ) : (
-    <div className={styles.unchecked} />
-  )
-  
-  return (
-
-  <div {...other} className={classes.join(' ')}>
+let MultiSelectOption = ({ checked, children, ...other }) => (
+  <div {...other} className={styles.option}>
     {children}
-    {disabled ? <noscript/> : icon}
+    {checked ?
+      <div className={styles.checked}>
+        <Icon width={20} height={20} name='check' fill='#ffffff' />
+      </div> :
+      <div className={styles.unchecked} />
+    }
   </div>
 );
-}
 
 export default MultiSelectOption;

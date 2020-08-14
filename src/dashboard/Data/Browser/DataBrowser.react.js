@@ -8,7 +8,6 @@
 import copy                   from 'copy-to-clipboard';
 import BrowserTable           from 'dashboard/Data/Browser/BrowserTable.react';
 import BrowserToolbar         from 'dashboard/Data/Browser/BrowserToolbar.react';
-import ContextMenu            from 'components/ContextMenu/ContextMenu.react';
 import * as ColumnPreferences from 'lib/ColumnPreferences';
 import ParseApp               from 'lib/ParseApp';
 import React                  from 'react';
@@ -34,8 +33,7 @@ export default class DataBrowser extends React.Component {
       order: order,
       current: null,
       editing: false,
-      copyableValue: undefined,
-      simplifiedSchema: this.getSimplifiedSchema(props.schema, props.className)
+      copyableValue: undefined
     };
 
     this.handleKey = this.handleKey.bind(this);
@@ -45,7 +43,6 @@ export default class DataBrowser extends React.Component {
     this.setEditing = this.setEditing.bind(this);
     this.handleColumnsOrder = this.handleColumnsOrder.bind(this);
     this.setCopyableValue = this.setCopyableValue.bind(this);
-    this.setContextMenu = this.setContextMenu.bind(this);
 
     this.saveOrderTimeout = null;
   }
@@ -61,7 +58,6 @@ export default class DataBrowser extends React.Component {
         order: order,
         current: null,
         editing: false,
-        simplifiedSchema: this.getSimplifiedSchema(props.schema, props.className)
       });
     } else if (Object.keys(props.columns).length !== Object.keys(this.props.columns).length
            || (props.isUnique && props.uniqueField !== this.props.uniqueField)) {
@@ -91,20 +87,6 @@ export default class DataBrowser extends React.Component {
     this.saveOrderTimeout = setTimeout(() => {
       ColumnPreferences.updatePreferences(order, appId, className)
     }, 1000);
-  }
-
-  getSimplifiedSchema(schema, classNameForEditors) {
-    const schemaSimplifiedData = {};
-    const classSchema = schema.data.get('classes').get(classNameForEditors);
-    if (classSchema) {
-      classSchema.forEach(({ type, targetClass }, col) => {
-        schemaSimplifiedData[col] = {
-          type,
-          targetClass,
-        };
-      });
-    }
-    return schemaSimplifiedData;
   }
 
   handleResize(index, delta) {
@@ -202,9 +184,7 @@ export default class DataBrowser extends React.Component {
       case 67: // C
         if ((e.ctrlKey || e.metaKey) && this.state.copyableValue !== undefined) {
           copy(this.state.copyableValue); // Copies current cell value to clipboard
-          if (this.props.showNote) {
-            this.props.showNote('Value copied to clipboard', false);
-          }
+          this.props.showNote('Value copied to clipboard', false)
           e.preventDefault()
         }
         break;
@@ -212,10 +192,8 @@ export default class DataBrowser extends React.Component {
   }
 
   setEditing(editing) {
-    if (this.props.updateRow) {
-      if (this.state.editing !== editing) {
-        this.setState({ editing: editing });
-      }
+    if (this.state.editing !== editing) {
+      this.setState({ editing: editing });
     }
   }
 
@@ -224,15 +202,11 @@ export default class DataBrowser extends React.Component {
       this.setState({ current });
     }
   }
-
+  
   setCopyableValue(copyableValue) {
     if (this.state.copyableValue !== copyableValue) {
       this.setState({ copyableValue });
     }
-  }
-
-  setContextMenu(contextMenuX, contextMenuY, contextMenuItems) {
-    this.setState({ contextMenuX, contextMenuY, contextMenuItems });
   }
 
   handleColumnsOrder(order) {
@@ -242,7 +216,7 @@ export default class DataBrowser extends React.Component {
   }
 
   render() {
-    let { className, count, disableSecurityDialog,  ...other } = this.props;
+    let { className, count, ...other } = this.props;
     const { preventSchemaEdits } = this.context.currentApp;
     return (
       <div>
@@ -250,15 +224,12 @@ export default class DataBrowser extends React.Component {
           order={this.state.order}
           current={this.state.current}
           editing={this.state.editing}
-          simplifiedSchema={this.state.simplifiedSchema}
           className={className}
           handleHeaderDragDrop={this.handleHeaderDragDrop}
           handleResize={this.handleResize}
           setEditing={this.setEditing}
           setCurrent={this.setCurrent}
           setCopyableValue={this.setCopyableValue}
-          setContextMenu={this.setContextMenu}
-          onFilterChange={this.props.onFilterChange}
           {...other} />
         <BrowserToolbar
           count={count}
@@ -268,19 +239,13 @@ export default class DataBrowser extends React.Component {
           setCurrent={this.setCurrent}
           enableDeleteAllRows={this.context.currentApp.serverInfo.features.schemas.clearAllDataFromClass && !preventSchemaEdits}
           enableExportClass={this.context.currentApp.serverInfo.features.schemas.exportClass && !preventSchemaEdits}
-          enableSecurityDialog={this.context.currentApp.serverInfo.features.schemas.editClassLevelPermissions && !disableSecurityDialog && !preventSchemaEdits}
+          enableSecurityDialog={this.context.currentApp.serverInfo.features.schemas.editClassLevelPermissions && !preventSchemaEdits}
           enableColumnManipulation={!preventSchemaEdits}
           enableClassManipulation={!preventSchemaEdits}
           handleColumnDragDrop={this.handleHeaderDragDrop}
           handleColumnsOrder={this.handleColumnsOrder}
           order={this.state.order}
-          {...other} />
-
-        {this.state.contextMenuX && <ContextMenu
-          x={this.state.contextMenuX}
-          y={this.state.contextMenuY}
-          items={this.state.contextMenuItems}
-        />}
+          {...other}/>
       </div>
     );
   }

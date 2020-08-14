@@ -56,7 +56,6 @@ import {
 import { Route, Redirect } from 'react-router-dom';
 import createClass from 'create-react-class';
 import { Helmet } from 'react-helmet';
-import Playground from './Data/Playground/Playground.react';
 
 const ShowSchemaOverview = false; //In progress features. Change false to true to work on this feature.
 
@@ -101,9 +100,6 @@ const PARSE_DOT_COM_SERVER_INFO = {
       update: true,
       delete: true,
     },
-    playground: {
-      evalCode: true
-    }
   },
   parseServerVersion: 'Parse.com',
 }
@@ -143,21 +139,21 @@ export default class Dashboard extends React.Component {
               app.serverInfo = {
                 error: 'unable to connect to server',
                 enabledFeatures: {},
-                parseServerVersion: 'unknown'
+                parseServerVersion: "unknown"
               }
               return Promise.resolve(app);
             } else if (error.code === 107) {
               app.serverInfo = {
                 error: 'server version too low',
                 enabledFeatures: {},
-                parseServerVersion: 'unknown'
+                parseServerVersion: "unknown"
               }
               return Promise.resolve(app);
             } else {
               app.serverInfo = {
                 error: error.message || 'unknown error',
                 enabledFeatures: {},
-                parseServerVersion: 'unknown'
+                parseServerVersion: "unknown"
               }
               return Promise.resolve(app);
             }
@@ -262,11 +258,6 @@ export default class Dashboard extends React.Component {
         <Route path={ props.match.path + '/graphql' } render={props => (
           <ApiConsole {...props}>
             <GraphQLConsole />
-          </ApiConsole>
-        )} />
-        <Route path={ props.match.path + '/js_console' } render={props => (
-          <ApiConsole {...props}>
-            <Playground />
           </ApiConsole>
         )} />
         <Redirect from={ props.match.path } to='/apps/:appId/api_console/rest' />
