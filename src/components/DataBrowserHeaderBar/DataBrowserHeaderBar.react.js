@@ -60,26 +60,24 @@ export default class DataBrowserHeaderBar extends React.Component {
       );
     });
 
-    if (onAddColumn) {
-      let finalStyle = {};
-      if (headers.length % 2) {
-        finalStyle.background = 'rgba(224,224,234,0.10)';
-      }
-  
-      elements.push(
-        readonly || preventSchemaEdits ? null : (
-          <div key='add' className={styles.addColumn} style={finalStyle}>
-            <a
-              href='javascript:;'
-              role='button'
-              className={styles.addColumnButton}
-              onClick={onAddColumn}>
-              Add a new column
-            </a>
-          </div>
-        )
-      );
+    let finalStyle = {};
+    if (headers.length % 2) {
+      finalStyle.background = 'rgba(224,224,234,0.10)';
     }
+
+    elements.push(
+      readonly || preventSchemaEdits ? null : (
+        <div key='add' className={styles.addColumn} style={finalStyle}>
+          <a
+            href='javascript:;'
+            role='button'
+            className={styles.addColumnButton}
+            onClick={onAddColumn}>
+            Add a new column
+          </a>
+        </div>
+      )
+    );
 
     return (
       <DndProvider backend={HTML5Backend}>

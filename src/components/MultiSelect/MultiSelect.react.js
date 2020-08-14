@@ -13,7 +13,6 @@ import React          from 'react';
 import ReactDOM       from 'react-dom';
 import stringList     from 'lib/stringList';
 import styles         from 'components/MultiSelect/MultiSelect.scss';
-import Chip           from 'components/Chip/Chip.react';
 
 export default class MultiSelect extends React.Component {
   constructor() {
@@ -22,23 +21,10 @@ export default class MultiSelect extends React.Component {
       open: false,
       position: null
     }
-    this.popoverRef = React.createRef(null);
-    this.handleScroll = () => {
-      let newPosition = this.props.fixed ? Position.inWindow(this.node) : Position.inDocument(this.node);
-      newPosition.y += this.node.offsetHeight;
-      if(this.popoverRef.current){
-        this.popoverRef.current.setPosition(newPosition);
-      }
-    }
   }
 
   componentDidMount() {
     this.node = ReactDOM.findDOMNode(this);
-    window.addEventListener('scroll', this.handleScroll)
-   
-  }
-  componentWillUnmount(){
-    window.removeEventListener('scroll', this.handleScroll)
   }
 
   componentWillReceiveProps() {
@@ -79,34 +65,31 @@ export default class MultiSelect extends React.Component {
     let popover = null;
     if (this.state.open) {
       let width = this.node.clientWidth;
-      
-      let classes = [styles.menu];
-      if (this.props.dense){
-        classes.push(styles.dense);
-      }
-
       popover = (
-        <Popover ref={this.popoverRef} fixed={this.props.fixed} position={this.state.position} onExternalClick={this.close.bind(this)}>
-          <div style={{ width }} className={classes.join(' ')}>
+        <Popover fixed={this.props.fixed} position={this.state.position} onExternalClick={this.close.bind(this)}>
+          <div style={{ width }} className={styles.menu}>
             {React.Children.map(this.props.children, c => React.cloneElement(c,
                 {
                   ...c.props,
                   checked: this.props.value.indexOf(c.props.value) > -1,
-                  onClick: c.props.disabled? null : this.select.bind(this, c.props.value)
+                  onClick: this.select.bind(this, c.props.value)
                 }
             ))}
           </div>
         </Popover>
       )
     }
-
-    let selection = [];
+    let content = [];
     let classes = [styles.current];
     React.Children.forEach(this.props.children, c => {
       if (this.props.value.indexOf(c.props.value) > -1) {
-        selection.push(c.props.children);
+        content.push(c.props.children);
       }
     });
+    if (content.length === 0 && this.props.placeHolder){
+      content.push(this.props.placeHolder);
+      classes.push(styles.placeholder);
+    }
     let dropdownStyle = {};
     if (this.props.width) {
       dropdownStyle = {
@@ -114,42 +97,10 @@ export default class MultiSelect extends React.Component {
         float: 'left'
       };
     }
-
-    let dropDownClasses = [styles.dropdown];
-    if (this.props.dense){
-      dropDownClasses.push(styles.dense);
-    }
-
-    let content = null;
-
-    if (selection.length === 0 && this.props.placeHolder){
-      content = this.props.placeHolder;
-      classes.push(styles.placeholder);
-    } else {
-
-      content = this.props.chips?
-            selection.map((child,index) => {
-              let item;
-              if(Array.isArray(this.props.value)){
-                item = this.props.value[index]
-              }
-              return (
-                <Chip 
-                  value={item}
-                  key={'chip-'+index}
-                  onClose={(removed) => {
-                    if(removed) this.select(removed);
-                  }}>
-                  {child}
-                </Chip>)}
-             ) :
-            stringList(selection, this.props.endDelineator);
-    }
-
     return (
-      <div style={dropdownStyle} className={dropDownClasses.join(' ')}>
+      <div style={dropdownStyle} className={styles.dropdown}>
         <div className={classes.join(' ')} onClick={this.toggle.bind(this)}>
-         {content}
+          {stringList(content, this.props.endDelineator)}
         </div>
         {popover}
       </div>
@@ -172,11 +123,5 @@ MultiSelect.propTypes = {
   ),
   endDelineator: PropTypes.string.describe(
     'End delineator to separate last selected option.'
-  ),
-  dense: PropTypes.bool.describe(
-    'Mini variant - less height'
-  ),
-  chips: PropTypes.bool.describe(
-    'Display chip for every selected item'
   ),
 }

@@ -19,7 +19,7 @@ export default class BrowserRow extends Component {
   }
 
   render() {
-    const { className, columns, currentCol, isUnique, obj, onPointerClick, order, readOnlyFields, row, rowWidth, selection, selectRow, setCopyableValue, setCurrent, setEditing, setRelation, onEditSelectedRow, setContextMenu, onFilterChange } = this.props;
+    const { className, columns, currentCol, isUnique, obj, onPointerClick, order, readOnlyFields, row, rowWidth, selection, selectRow, setCopyableValue, setCurrent, setEditing, setRelation } = this.props;
     let attributes = obj.attributes;
     return (
       <div className={styles.tableRow} style={{ minWidth: rowWidth }}>
@@ -61,11 +61,6 @@ export default class BrowserRow extends Component {
           return (
             <BrowserCell
               key={name}
-              schema={this.props.schema}
-              simplifiedSchema={this.props.simplifiedSchema}
-              filters={this.props.filters}
-              className={className}
-              field={name}
               row={row}
               col={j}
               type={type}
@@ -75,14 +70,10 @@ export default class BrowserRow extends Component {
               onSelect={setCurrent}
               onEditChange={setEditing}
               onPointerClick={onPointerClick}
-              onFilterChange={onFilterChange}
               setRelation={setRelation}
-              objectId={obj.id}
               value={attr}
               hidden={hidden}
-              setCopyableValue={setCopyableValue}
-              setContextMenu={setContextMenu}
-              onEditSelectedRow={onEditSelectedRow} />
+              setCopyableValue={setCopyableValue} />
           );
         })}
       </div>

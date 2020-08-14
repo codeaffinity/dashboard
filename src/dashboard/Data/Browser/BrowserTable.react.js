@@ -113,7 +113,7 @@ export default class BrowserTable extends React.Component {
     if (this.props.data) {
       const rowWidth = this.props.order.reduce(
         (rowWidth, { visible, width }) => visible ? rowWidth + width : rowWidth,
-        this.props.onAddRow ? 210 : 0
+        210
       );
       let newRow = null;
       if (this.props.newObject && this.state.offset <= 0) {
@@ -128,7 +128,6 @@ export default class BrowserTable extends React.Component {
               isUnique={this.props.isUnique}
               obj={this.props.newObject}
               onPointerClick={this.props.onPointerClick}
-              onFilterChange={this.props.onFilterChange}
               order={this.props.order}
               readOnlyFields={READ_ONLY}
               row={-1}
@@ -138,9 +137,7 @@ export default class BrowserTable extends React.Component {
               setCurrent={this.props.setCurrent}
               setEditing={this.props.setEditing}
               setRelation={this.props.setRelation}
-              setCopyableValue={this.props.setCopyableValue}
-              setContextMenu={this.props.setContextMenu}
-              onEditSelectedRow={this.props.onEditSelectedRow} />
+              setCopyableValue={this.props.setCopyableValue} />
           </div>
         );
       }
@@ -160,14 +157,10 @@ export default class BrowserTable extends React.Component {
           isEditing={isEditingRow}
           className={this.props.className}
           columns={this.props.columns}
-          schema={this.props.schema}
-          simplifiedSchema={this.props.simplifiedSchema}
-          filters={this.props.filters}
           currentCol={currentCol}
           isUnique={this.props.isUnique}
           obj={obj}
           onPointerClick={this.props.onPointerClick}
-          onFilterChange={this.props.onFilterChange}
           order={this.props.order}
           readOnlyFields={READ_ONLY}
           row={i}
@@ -177,9 +170,7 @@ export default class BrowserTable extends React.Component {
           setCurrent={this.props.setCurrent}
           setEditing={this.props.setEditing}
           setRelation={this.props.setRelation}
-          setCopyableValue={this.props.setCopyableValue}
-          setContextMenu={this.props.setContextMenu}
-          onEditSelectedRow={this.props.onEditSelectedRow} />
+          setCopyableValue={this.props.setCopyableValue} />
       }
 
       if (this.props.editing) {
@@ -228,8 +219,7 @@ export default class BrowserTable extends React.Component {
           }
           let wrapLeft = 30;
           for (let i = 0; i < this.props.current.col; i++) {
-            const column = this.props.order[i];
-            wrapLeft += column.visible ? column.width : 0;
+            wrapLeft += this.props.order[i].width;
           }
           if (!this.props.isUnique) {
             editor = (
@@ -250,15 +240,14 @@ export default class BrowserTable extends React.Component {
                     );
                   }
                   this.props.setEditing(false);
-                }}
-                onCancel={() =>this.props.setEditing(false)} />
+                }} />
             );
           }
         }
       }
 
       let addRow = null;
-      if (!this.props.newObject && this.props.onAddRow) {
+      if (!this.props.newObject) {
         if (this.props.relation) {
           addRow = (
             <div className={styles.addRow}>
@@ -316,9 +305,9 @@ export default class BrowserTable extends React.Component {
                   icon='files-solid' /> :
                 <EmptyState
                   title='No data to display'
-                  description={this.props.onAddRow && 'Add a row to store an object in this class.'}
+                  description='Add a row to store an object in this class.'
                   icon='files-solid'
-                  cta={this.props.onAddRow && 'Add a row'}
+                  cta='Add a row'
                   action={this.props.onAddRow} />
               }
             </div>
