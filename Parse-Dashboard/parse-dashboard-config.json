@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "apps": [{
     "serverURL": "https://techie-backbone.herokuapp.com/parse",
     "appId": "techie-backbone",
@@ -33,6 +34,18 @@
     "user":"truekasun",
     "pass":"kasun@1991"
    }
+=======
+  "apps": [
+    {
+      "serverURL": "http://localhost:1338/parse",
+      "appId": "hello",
+      "masterKey": "world",
+      "appName": "",
+      "iconName": "",
+      "primaryBackgroundColor": "",
+      "secondaryBackgroundColor": ""
+    }
+>>>>>>> 57953df19ca7fd5f67c065727d32e3e5a4b841bc
   ],
   "iconsFolder": "icons"
 }
